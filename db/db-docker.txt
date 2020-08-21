@@ -1,0 +1,5 @@
+REDIS
+docker run -p 6379:6379 --name myredis -v myredis-data:/data -d redis:6.0.6-alpine
+
+POSTGRES
+docker run -p 5432:5432 --name mypostgres -v mypg-data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=mysecretpassword -d postgres:11-alpine
