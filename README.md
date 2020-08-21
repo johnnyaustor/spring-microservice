@@ -1,0 +1,9 @@
+# Spring Microservice
+
+###branch bagian1
+- membuat account service
+- connect db redis
+
+###branch bagian2
+- membuat otp service
+- openfeign client, interaksi antar service 
