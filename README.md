@@ -10,3 +10,7 @@
 
 ###branch bagian3
 - load balancer, service registry
+
+###branch bagian4
+- membuat email service
+- message broker redis
