@@ -7,3 +7,6 @@
 ###branch bagian2
 - membuat otp service
 - openfeign client, interaksi antar service 
+
+###branch bagian3
+- load balancer, service registry
