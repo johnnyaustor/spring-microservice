@@ -14,3 +14,6 @@
 ###branch bagian4
 - membuat email service
 - message broker redis
+
+###branch bagian5
+- membuat proxy service
