@@ -17,3 +17,6 @@
 
 ###branch bagian5
 - membuat proxy service
+
+###branch bagian6
+- membuat configuration service
