@@ -20,3 +20,6 @@
 
 ###branch bagian6
 - membuat configuration service
+
+###branch bagian7
+- menggunakan config client

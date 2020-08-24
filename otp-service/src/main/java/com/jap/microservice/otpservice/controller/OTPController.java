@@ -4,6 +4,7 @@ import com.jap.microservice.otpservice.dto.RegisterCheckDto;
 import com.jap.microservice.otpservice.service.OTPService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RestController
 public class OTPController {
+
+    @Value("${db.string}")
+    private String dbString;
 
     private final OTPService otpService;
     private final Environment environment;
@@ -41,5 +45,10 @@ public class OTPController {
         String port = environment.getProperty("local.server.port");
         log.debug("port:{}", port);
         return "oke with port:" + port;
+    }
+
+    @GetMapping("/test-profile-config")
+    public String testProfileConfig() {
+        return dbString;
     }
 }
