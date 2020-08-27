@@ -1,6 +1,7 @@
 package com.jap.microservice.accountservice.controller;
 
 import com.jap.microservice.accountservice.dto.RegisterCheckDto;
+import com.jap.microservice.accountservice.dto.RegisterVerificationDto;
 import com.jap.microservice.accountservice.service.AccountService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class AccountController {
     public ResponseEntity<?> registerCheck(@RequestBody RegisterCheckDto register) {
         log.debug("register {}", register);
         return accountService.registerCheck(register);
+    }
+
+    @PostMapping("/verification")
+    public ResponseEntity<?> verification(@RequestBody RegisterVerificationDto registerVerificationDto) {
+        return accountService.verification(registerVerificationDto);
     }
 
     @GetMapping("/load")

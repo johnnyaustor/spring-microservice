@@ -1,6 +1,7 @@
 package com.jap.microservice.otpservice.controller;
 
 import com.jap.microservice.otpservice.dto.RegisterCheckDto;
+import com.jap.microservice.otpservice.dto.RegisterVerificationDto;
 import com.jap.microservice.otpservice.service.OTPService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,10 @@ public class OTPController {
         String port = environment.getProperty("local.server.port");
         log.debug("port:{}", port);
         return "oke with port:" + port;
+    }
+
+    @PostMapping("/verification")
+    public ResponseEntity<?> verificationOTP(@RequestBody RegisterVerificationDto registerVerificationDto) {
+        return otpService.verificationOTP(registerVerificationDto);
     }
 }

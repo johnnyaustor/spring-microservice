@@ -5,6 +5,7 @@ import com.jap.microservice.accountservice.db.entity.TempAccount;
 import com.jap.microservice.accountservice.db.repository.AccountRepository;
 import com.jap.microservice.accountservice.db.repository.TempAccountRepository;
 import com.jap.microservice.accountservice.dto.RegisterCheckDto;
+import com.jap.microservice.accountservice.dto.RegisterVerificationDto;
 import com.jap.microservice.accountservice.feignclient.OTPClient;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,25 @@ public class AccountService {
 
     public String testLoadBalancer() {
         return otpClient.testLoadBalancer();
+    }
+
+    public ResponseEntity<?> verification(RegisterVerificationDto registerVerificationDto) {
+        // check redis
+        TempAccount tempAccount = tempAccountRepository.getFirstByEmail(registerVerificationDto.getEmail());
+        if (tempAccount==null) return ResponseEntity.notFound().build();
+
+        // verification otp
+        try {
+            otpClient.verificationOTP(registerVerificationDto);
+        } catch (FeignException.FeignClientException ex) {
+            ex.printStackTrace();
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        // update verification
+        tempAccount.setValid(true);
+        tempAccountRepository.save(tempAccount);
+
+        return ResponseEntity.ok().build();
     }
 }
