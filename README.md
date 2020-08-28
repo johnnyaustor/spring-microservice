@@ -15,5 +15,11 @@
 - membuat email service
 - message broker redis
 
+###branch bagian4b
+- register verification
+
+###branch bagian4c
+- register password
+
 ###branch bagian5
 - membuat proxy service
