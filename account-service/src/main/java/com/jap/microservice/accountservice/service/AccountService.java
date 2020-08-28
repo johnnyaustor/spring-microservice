@@ -5,6 +5,7 @@ import com.jap.microservice.accountservice.db.entity.TempAccount;
 import com.jap.microservice.accountservice.db.repository.AccountRepository;
 import com.jap.microservice.accountservice.db.repository.TempAccountRepository;
 import com.jap.microservice.accountservice.dto.RegisterCheckDto;
+import com.jap.microservice.accountservice.dto.RegisterPasswordDto;
 import com.jap.microservice.accountservice.dto.RegisterVerificationDto;
 import com.jap.microservice.accountservice.feignclient.OTPClient;
 import feign.FeignException;
@@ -76,6 +77,31 @@ public class AccountService {
         // update verification
         tempAccount.setValid(true);
         tempAccountRepository.save(tempAccount);
+
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> registerPassword(RegisterPasswordDto registerPasswordDto) {
+        // check redis
+        TempAccount tempAccount = tempAccountRepository.getFirstByEmail(registerPasswordDto.getEmail());
+        if (tempAccount==null) return ResponseEntity.notFound().build();
+
+        // verification valid
+        if (!tempAccount.isValid()) return ResponseEntity.unprocessableEntity().build();
+
+        // save to postgres
+        Account account = new Account();
+        account.setEmail(registerPasswordDto.getEmail());
+        account.setPassword(registerPasswordDto.getPassword());
+        try {
+            accountRepository.save(account);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        
+        // delete temp account
+        tempAccountRepository.delete(tempAccount);
 
         return ResponseEntity.ok().build();
     }

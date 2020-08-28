@@ -1,6 +1,7 @@
 package com.jap.microservice.accountservice.controller;
 
 import com.jap.microservice.accountservice.dto.RegisterCheckDto;
+import com.jap.microservice.accountservice.dto.RegisterPasswordDto;
 import com.jap.microservice.accountservice.dto.RegisterVerificationDto;
 import com.jap.microservice.accountservice.service.AccountService;
 import lombok.extern.log4j.Log4j2;
@@ -35,6 +36,11 @@ public class AccountController {
     @PostMapping("/verification")
     public ResponseEntity<?> verification(@RequestBody RegisterVerificationDto registerVerificationDto) {
         return accountService.verification(registerVerificationDto);
+    }
+
+    @PostMapping("/password")
+    public ResponseEntity<?> registerPassword(@RequestBody RegisterPasswordDto registerPasswordDto) {
+        return accountService.registerPassword(registerPasswordDto);
     }
 
     @GetMapping("/load")
