@@ -4,10 +4,12 @@ import com.jap.microservice.otpservice.db.entity.TempOTP;
 import com.jap.microservice.otpservice.db.repository.TempOTPRepository;
 import com.jap.microservice.otpservice.dto.EmailDto;
 import com.jap.microservice.otpservice.dto.RegisterCheckDto;
+import com.jap.microservice.otpservice.dto.RegisterVerificationDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -64,5 +66,16 @@ public class OTPService {
 
     private String generateOTP() {
         return new DecimalFormat("0000").format(new Random().nextInt(9999));
+    }
+
+    public ResponseEntity<?> verificationOTP(RegisterVerificationDto registerVerificationDto) {
+        // check by email
+        TempOTP tempOTPByEmail = tempOTPRepository.getFirstByEmail(registerVerificationDto.getEmail());
+        if (tempOTPByEmail==null) return ResponseEntity.notFound().build();
+
+        // verification otp
+        if (!tempOTPByEmail.getOtp().equals(registerVerificationDto.getOtp())) return ResponseEntity.unprocessableEntity().build();
+
+        return ResponseEntity.ok().build();
     }
 }
